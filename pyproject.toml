@@ -1,0 +1,34 @@
+[project]
+name = "cherry-tree"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Achiles Santos",email = "achillesgomess@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13, <4.0"
+dependencies = [
+    "pyautogui (>=0.9.54)",
+    "pygetwindow (>=0.0.9,<0.0.10)",
+    "tinydb (>=4.8.2,<5.0.0)",
+    "pyscreeze (>=1.0.1,<2.0.0)",
+    "pillow (>=11.1.0,<12.0.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+taskipy = "^1.14.1"
+pylint = "^3.3.3"
+black = "^24.10.0"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.4"
+pytest-mock = "^3.14.0"
+
+[tool.taskipy.tasks]
+test = "python -m pytest ."
+lint = "pylint tests ."
+format = "black cherry_tree ."
