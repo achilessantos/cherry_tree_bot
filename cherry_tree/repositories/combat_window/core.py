@@ -6,7 +6,7 @@ from cherry_tree.shared.typings import BBox
 from cherry_tree.utils.mouse import left_click
 
 
-def get_combat_mode(screenshot, combat_mode = 'strength_mode'):
+def get_combat_mode(screenshot, combat_mode="strength_mode"):
     image_path = images["combatMode"].get(combat_mode)
     template = prepare_image(image_path)
     result = locate(screenshot, template)
@@ -16,6 +16,7 @@ def get_combat_mode(screenshot, combat_mode = 'strength_mode'):
         return True
 
     return False
+
 
 def set_combat_mode(coordinates: BBox):
     current_mouse_position = pg.position()

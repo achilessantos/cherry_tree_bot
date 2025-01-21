@@ -14,6 +14,7 @@ logging.basicConfig(
 
 DEFAULT_COMBAT_MODE = "strength_mode"
 
+
 class CherryTreeThread:
     def __init__(self, context):
         self.context = context

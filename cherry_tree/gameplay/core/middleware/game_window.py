@@ -7,7 +7,8 @@ def set_game_window_middleware(context):
     if context["gameWindow"]["enabled"]:
         return context
 
-    context["gameWindow"]["enabled"] = is_activated_game_window(context["gameWindow"]["name"])
+    context["gameWindow"]["enabled"] = is_activated_game_window(
+        context["gameWindow"]["name"]
+    )
 
     return context
-    
