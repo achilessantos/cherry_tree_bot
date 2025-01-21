@@ -1,23 +1,28 @@
+import logging
 from time import sleep, time
-
-# import traceback
-# from cherry_tree.utils.window import restoreWindow, activateWindow
+from cherry_tree.gameplay.core.middleware.screenshot import set_screenshot_middleware
 from cherry_tree.gameplay.core.middleware.game_window import (
     set_game_window_middleware,
 )
 from cherry_tree.gameplay.core.middleware.combat_mode import set_combat_mode_middleware
 
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s:%(name)s:%(levelname)s:%(message)s",
+)
+
+DEFAULT_COMBAT_MODE = "strength_mode"
+
 class CherryTreeThread:
     def __init__(self, context):
         self.context = context
 
     def mainloop(self):
-        print("hello thread")
-        print(self.context)
+        logging.info("Starting mainloop of CherryTreeThread")
         print(self.context.context)
         start_time = time()
-        print(start_time)
+        # print(start_time)
         self.context.context = self.handle_game_data(self.context.context)
         # while True:
         #     try:
@@ -37,5 +42,7 @@ class CherryTreeThread:
             return context
 
         context = set_game_window_middleware(context)
-        # context = set_combat_mode_middleware(context)
+        context = set_screenshot_middleware(context)
+        context = set_combat_mode_middleware(context, DEFAULT_COMBAT_MODE)
+
         return context
