@@ -1,11 +1,7 @@
 from cherry_tree.utils.window import restore_window
 
 
-def active_game_window(context):
-    if context["gameWindow"]["enabled"]:
-        return context
+def is_activated_game_window(game_window_name):
+    restore_window(game_window_name)
 
-    restore_window(context["gameWindow"]["name"])
-    context["gameWindow"]["enabled"] = True
-
-    return context
+    return True
