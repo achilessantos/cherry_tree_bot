@@ -7,7 +7,7 @@ from numpy import ndarray
 from cherry_tree.shared.typings import BBox
 
 
-logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("main")
 camera = dxcam.create(output_color="BGRA")
 latest_screenshot = None
 
@@ -15,7 +15,7 @@ latest_screenshot = None
 def get_screenshot() -> Union[ndarray, None]:
     global camera, latest_screenshot
 
-    logging.info("Capturing screenshot...")
+    logger.info("Capturing screenshot...")
     screenshot = camera.grab()
 
     if screenshot is None:
