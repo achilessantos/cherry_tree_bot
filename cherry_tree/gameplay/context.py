@@ -10,7 +10,7 @@ CONTEXT = {
         "distance": {"enabled": False, "image": None},
         "strength": {"enabled": False, "image": None},
     },
-    "gameWindow": {"enabled": None, "name": None},
+    "gameWindow": {"enabled": False, "name": None},
     "pause": False,
-    "slayerHunting": {"enabled": True, "slayerLevel": None, "slayerCreature": None},
+    "slayerHunting": {"enabled": False, "slayerLevel": None, "slayerCreature": None},
 }
