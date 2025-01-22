@@ -1,9 +1,9 @@
-import cv2
-import dxcam
 import os
 import logging
-from numpy import ndarray
 from typing import Tuple, Union
+import cv2
+import dxcam
+from numpy import ndarray
 from cherry_tree.shared.typings import BBox
 
 
@@ -17,6 +17,7 @@ def get_screenshot() -> Union[ndarray, None]:
 
     logging.info("Capturing screenshot...")
     screenshot = camera.grab()
+
     if screenshot is None:
         return latest_screenshot
 
@@ -25,7 +26,9 @@ def get_screenshot() -> Union[ndarray, None]:
     return latest_screenshot
 
 
-def locate(screenshot: any, template: any, confidence: float = 0.85) -> Union[BBox, None]:
+def locate(
+    screenshot: any, template: any, confidence: float = 0.85
+) -> Union[BBox, None]:
     if screenshot is None:
         raise ValueError("Screenshot is None. Please provide a valid image.")
     if template is None:
@@ -41,7 +44,12 @@ def locate(screenshot: any, template: any, confidence: float = 0.85) -> Union[BB
         )
 
     template_width, template_height = template.shape[::-1]
-    return max_locate[0] + template_width // 2, max_locate[1] + template_height // 2, template_width, template_height
+    return (
+        max_locate[0] + template_width // 2,
+        max_locate[1] + template_height // 2,
+        template_width,
+        template_height,
+    )
 
 
 def read_image(image_path: str):
@@ -49,6 +57,7 @@ def read_image(image_path: str):
         raise FileNotFoundError(f"Image file not found: {image_path}")
 
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
     if image is None:
         raise ValueError(f"Failed to load image at path: {image_path}")
 

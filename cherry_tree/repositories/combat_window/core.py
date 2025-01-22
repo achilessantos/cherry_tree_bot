@@ -1,9 +1,9 @@
 import time
 import pyautogui as pg
-from .config import images
 from cherry_tree.utils.core import read_image, locate
 from cherry_tree.shared.typings import BBox
 from cherry_tree.utils.mouse import left_click
+from .config import images
 
 
 def get_combat_mode(screenshot, combat_mode="strength_mode"):

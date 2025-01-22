@@ -1,6 +1,4 @@
 from pathlib import Path
-import os
-from posixpath import relpath
 
 
 absolute_path = Path(__file__).parent.resolve()
