@@ -1,22 +1,17 @@
 """Main application"""
 
-# import time
-# import pygetwindow as gw
-# from cherry_tree.utils.window import *
 from cherry_tree.gameplay.threads.cherry_tree import CherryTreeThread
 from cherry_tree.gameplay.context import CONTEXT
 from cherry_tree.ui.context import Context
+from cherry_tree.utils.log import setup_custom_logger
 
-
-# def activate_window():
-#     matchingWindows = pygetwindow.getWindowsWithTitle(game_window)
-#     win = matchingWindows[0]
-#     win.activate()
+logger = setup_custom_logger("main")
 
 
 def main():
+    logger.info("Initializing application...")
+
     context_instance = Context(CONTEXT)
-    print("this is the context: ", context_instance)
     cherry_tree_bot_instance = CherryTreeThread(context_instance)
     cherry_tree_bot_instance.mainloop()
     # matchingWindows = gw.getWindowsWithTitle(game_window)[0]
