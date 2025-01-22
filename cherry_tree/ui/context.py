@@ -19,7 +19,7 @@ class Context:
     def insert_profile(self):
         self.db.insert(
             {
-                "enabled": False,
+                "enabled": True,
                 "config": {
                     "combat": {
                         "attack": {"enabled": False, "image": None},

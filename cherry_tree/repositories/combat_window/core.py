@@ -3,11 +3,11 @@ import pyautogui as pg
 from cherry_tree.utils.core import read_image, locate
 from cherry_tree.shared.typings import BBox
 from cherry_tree.utils.mouse import left_click
-from .config import images
+from .config import IMAGES
 
 
 def get_combat_mode(screenshot, combat_mode="strength_mode"):
-    image_path = images["combatMode"].get(combat_mode)
+    image_path = IMAGES["combatMode"].get(combat_mode)
     template = read_image(image_path)
     result = locate(screenshot, template)
 
