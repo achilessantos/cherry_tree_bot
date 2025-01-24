@@ -3,6 +3,9 @@ Gameplay context that be passed and modified by program until its running, all a
 on bot needs to be configured here.
 """
 
+from cherry_tree.gameplay.core.tasks.orchestrator.orchestrator import TasksOrchestrator
+
+
 CONTEXT = {
     "combat": {
         "attack": {"enabled": False, "image": None},
@@ -13,4 +16,5 @@ CONTEXT = {
     "gameWindow": {"enabled": False, "name": None},
     "pause": False,
     "slayerHunting": {"enabled": False, "slayerLevel": None, "slayerCreature": None},
+    "tasksOrchestrator": TasksOrchestrator(),
 }
