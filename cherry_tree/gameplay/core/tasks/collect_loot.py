@@ -1,0 +1,27 @@
+import logging
+from cherry_tree.gameplay.core.tasks.orchestrator.base import BaseTask
+from cherry_tree.gameplay.typings import Context
+from cherry_tree.repositories.combat_window.core import get_collect_loot_coordinate
+from cherry_tree.utils.mouse import left_click
+
+
+logger = logging.getLogger("main")
+
+
+class CollectLootTask(BaseTask):
+    def __init__(self):
+        super().__init__(
+            name="collect_loot",
+            is_root_task=True,
+            delay_before_start=1,
+            delay_after_complete=1,
+        )
+
+    def execute(self, context: Context) -> Context:
+        coordinate = get_collect_loot_coordinate(context["screenshot"])
+
+        if coordinate:
+            left_click(coordinate)
+            logger.info("Loot was collected!")
+
+        return context
