@@ -1,17 +1,22 @@
-from time import time
+from time import sleep, time
 from typing import Optional
+from collections import deque
 from ....typings import Context
 from .base import BaseTask
 from .task_status import TaskStatus
 
 
+
 class TasksOrchestrator:
     def __init__(self):
+        self.tasks_queue = deque()  # Fila de tarefas
         self.root_task: Optional[BaseTask] = None
+        self.current_task: Optional[BaseTask] = None
 
     def set_root_task(self, context: Context, task: BaseTask):
         """Sets the root task and interrupts the current task if needed."""
         current_task = self.get_current_task(context)
+
         if current_task:
             self.interrupt_tasks(context, current_task)
         if task:
@@ -26,8 +31,9 @@ class TasksOrchestrator:
         return context
 
     def reset(self):
-        """Resets the orchestrator by clearing the root task."""
-        self.root_task = None
+        """Reseta a fila e o estado do orquestrador."""
+        self.tasks_queue.clear()
+        self.current_task = None
 
     def get_current_task(self, context: Context) -> Optional[BaseTask]:
         """Retrieves the currently active task."""
@@ -43,11 +49,55 @@ class TasksOrchestrator:
             if current_task.is_root_task
             else current_task.root_task.name
         )
+    
+    def add_task(self, task: BaseTask):
+        """Adiciona uma nova tarefa à fila."""
+        self.tasks_queue.append(task)
 
-    def _get_nested_task(
-        self, task: Optional[BaseTask], context: Context
-    ) -> Optional[BaseTask]:
-        """Recursively retrieves the nested task based on the current context."""
+    def set_next_task(self):
+        """Define a próxima tarefa da fila como a atual."""
+        if self.tasks_queue:
+            self.current_task = self.tasks_queue.popleft()
+            self.current_task.reset()
+
+
+    def execute(self, context: Context) -> Context:
+        """Executa todas as tarefas da fila na mesma iteração."""
+        while self.tasks_queue or self.current_task:
+            if not self.current_task:
+                self.set_next_task()
+
+            if not self.current_task:
+                break  # Não há mais tarefas para executar
+
+            # Delay antes de iniciar a tarefa
+            if self.current_task.status == TaskStatus.NOT_STARTED.value:
+                if self.current_task.delay_before_start:
+                    sleep(self.current_task.delay_before_start)
+                self.current_task.status = TaskStatus.RUNNING.value
+
+            # Executa a tarefa
+            if self.current_task.status == TaskStatus.RUNNING.value:
+                context = self.current_task.execute(context)            
+
+            # Delay após completar a tarefa
+            if self.current_task.status == TaskStatus.COMPLETED.value:
+                context = self.current_task.on_complete(context)
+                if self.current_task.delay_after_complete:
+                    sleep(self.current_task.delay_after_complete)
+                self.current_task = None  # Finaliza a tarefa atual            
+
+        return context
+
+
+    def _get_nested_task(self, task: Optional[BaseTask], context: Context) -> Optional[BaseTask]:
+        """
+        Recupera a tarefa aninhada com base no contexto, priorizando o current_task.
+        """
+        if self.current_task:  # Verifica se há uma tarefa atual definida
+            return self.current_task
+
+        # Caso contrário, utiliza a lógica baseada na root_task
         if not task:
             return None
 
@@ -62,15 +112,6 @@ class TasksOrchestrator:
                     task.tasks[task.current_task_index], context
                 )
         return task
-
-    def execute(self, context: Context) -> Context:
-        """Executes the current task and manages its lifecycle."""
-        current_task = self.get_current_task(context)
-        if not current_task:
-            return context
-
-        self._check_hooks(current_task, context)
-        return self._handle_tasks(context)
 
     def _check_hooks(self, current_task: BaseTask, context: Context) -> Context:
         """Checks and applies hooks for restarting or completing tasks."""

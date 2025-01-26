@@ -1,24 +1,20 @@
-import inspect
 from cherry_tree.gameplay.typings import Context
 from cherry_tree.gameplay.core.tasks.orchestrator.task_status import TaskStatus
 
 
 def set_clean_up_tasks_middleware(context: Context) -> Context:
-    current_task = context["tasksOrchestrator"].get_current_task(context)
-    # print("current_task, set_clean_up_tasks_middleware", current_task)
-    # print(inspect.getmembers(current_task, lambda a:not(inspect.isroutine(a))))
+    """
+    Middleware para limpar tarefas quando necessário.
+    """
+    orchestrator = context["tasksOrchestrator"]
 
-    if current_task:
-        if (
-            current_task.is_root_task
-            and current_task.status == TaskStatus.COMPLETED.value
-        ):
-            context["tasksOrchestrator"].reset()
+    # Obter a tarefa atual diretamente do Orchestrator
+    current_task = orchestrator.current_task
 
-        if (
-            current_task.root_task
-            and current_task.root_task.status == TaskStatus.COMPLETED.value
-        ):
-            context["tasksOrchestrator"].reset()
+    # Se não houver tarefa atual, ou se estiver concluída, limpar a fila
+    if current_task and current_task.status == TaskStatus.COMPLETED.value:
+        orchestrator.reset()
+    elif orchestrator.root_task and orchestrator.root_task.status == TaskStatus.COMPLETED.value:
+        orchestrator.reset()
 
     return context
