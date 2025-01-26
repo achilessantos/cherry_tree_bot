@@ -1,6 +1,6 @@
 import os
 import logging
-from typing import Tuple, Union
+from typing import Union
 import cv2
 import dxcam
 from numpy import ndarray
@@ -9,21 +9,21 @@ from cherry_tree.shared.typings import BBox
 
 logger = logging.getLogger("main")
 camera = dxcam.create(output_color="BGRA")
-latest_screenshot = None
+LATEST_SCREENSHOT = None
 
 
 def get_screenshot() -> Union[ndarray, None]:
-    global camera, latest_screenshot
+    global camera, LATEST_SCREENSHOT
 
     logger.info("Capturing screenshot...")
     screenshot = camera.grab()
 
     if screenshot is None:
-        return latest_screenshot
+        return LATEST_SCREENSHOT
 
-    latest_screenshot = cv2.cvtColor(screenshot, cv2.COLOR_BGRA2GRAY)
+    LATEST_SCREENSHOT = cv2.cvtColor(screenshot, cv2.COLOR_BGRA2GRAY)
 
-    return latest_screenshot
+    return LATEST_SCREENSHOT
 
 
 def locate(

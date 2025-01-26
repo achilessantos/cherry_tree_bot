@@ -21,9 +21,9 @@ def setup_custom_logger(name):
     logger.addHandler(rotate_file)
 
     # print log messages to console
-    consoleHandler = logging.StreamHandler()
-    logFormatter = logging.Formatter(log_format)
-    consoleHandler.setFormatter(logFormatter)
-    logger.addHandler(consoleHandler)
+    console_handler = logging.StreamHandler()
+    log_formatter = logging.Formatter(log_format)
+    console_handler.setFormatter(log_formatter)
+    logger.addHandler(console_handler)
 
     return logger

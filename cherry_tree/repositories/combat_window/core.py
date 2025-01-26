@@ -3,7 +3,7 @@ import pyautogui as pg
 from cherry_tree.utils.core import read_image, locate
 from cherry_tree.shared.typings import BBox
 from cherry_tree.utils.mouse import left_click
-from .config import IMAGES
+from cherry_tree.repositories.combat_window.config import IMAGES
 
 
 def get_combat_mode(screenshot, combat_mode="strength_mode"):
@@ -12,10 +12,20 @@ def get_combat_mode(screenshot, combat_mode="strength_mode"):
     result = locate(screenshot, template)
 
     if result:
-        set_combat_mode(result)
-        return True
+        return result
 
-    return False
+    return None
+
+
+def get_collect_loot_coordinate(screenshot):
+    image_path = IMAGES["buttons"].get("collectLoots")
+    template = read_image(image_path)
+    result = locate(screenshot, template)
+
+    if result:
+        return result
+
+    return None
 
 
 def set_combat_mode(coordinates: BBox):
