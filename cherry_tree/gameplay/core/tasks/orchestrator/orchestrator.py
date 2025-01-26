@@ -6,7 +6,6 @@ from .base import BaseTask
 from .task_status import TaskStatus
 
 
-
 class TasksOrchestrator:
     def __init__(self):
         self.tasks_queue = deque()  # Fila de tarefas
@@ -49,7 +48,7 @@ class TasksOrchestrator:
             if current_task.is_root_task
             else current_task.root_task.name
         )
-    
+
     def add_task(self, task: BaseTask):
         """Adiciona uma nova tarefa à fila."""
         self.tasks_queue.append(task)
@@ -59,7 +58,6 @@ class TasksOrchestrator:
         if self.tasks_queue:
             self.current_task = self.tasks_queue.popleft()
             self.current_task.reset()
-
 
     def execute(self, context: Context) -> Context:
         """Executa todas as tarefas da fila na mesma iteração."""
@@ -78,19 +76,20 @@ class TasksOrchestrator:
 
             # Executa a tarefa
             if self.current_task.status == TaskStatus.RUNNING.value:
-                context = self.current_task.execute(context)            
+                context = self.current_task.execute(context)
 
             # Delay após completar a tarefa
             if self.current_task.status == TaskStatus.COMPLETED.value:
                 context = self.current_task.on_complete(context)
                 if self.current_task.delay_after_complete:
                     sleep(self.current_task.delay_after_complete)
-                self.current_task = None  # Finaliza a tarefa atual            
+                self.current_task = None  # Finaliza a tarefa atual
 
         return context
 
-
-    def _get_nested_task(self, task: Optional[BaseTask], context: Context) -> Optional[BaseTask]:
+    def _get_nested_task(
+        self, task: Optional[BaseTask], context: Context
+    ) -> Optional[BaseTask]:
         """
         Recupera a tarefa aninhada com base no contexto, priorizando o current_task.
         """

@@ -33,16 +33,15 @@ class SetCombatModeTask(BaseTask):
             self.status = TaskStatus.COMPLETED.value
 
         return context
-    
 
     def get_combat_mode_enabled(self, context: Context):
         enabled_combat_types = []
 
-        for combat_type, settings in context['combat'].items():
-            if settings.get('enabled'):
+        for combat_type, settings in context["combat"].items():
+            if settings.get("enabled"):
                 enabled_combat_types.append(combat_type)
 
         if len(enabled_combat_types) == 1:
             return enabled_combat_types[0]
-        
+
         return None
