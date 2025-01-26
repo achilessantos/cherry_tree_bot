@@ -1,6 +1,6 @@
 import time
 import pyautogui as pg
-from cherry_tree.utils.core import read_image, locate, get_screenshot
+from cherry_tree.utils.core import read_image, locate
 from cherry_tree.shared.typings import BBox
 from cherry_tree.utils.mouse import left_click
 from cherry_tree.repositories.combat_window.config import IMAGES

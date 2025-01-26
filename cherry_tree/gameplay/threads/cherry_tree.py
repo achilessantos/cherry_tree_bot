@@ -1,7 +1,7 @@
 import logging
-import pyautogui
 import traceback
 from time import sleep, time
+import pyautogui
 from cherry_tree.gameplay.core.middleware.screenshot import set_screenshot_middleware
 from cherry_tree.gameplay.core.middleware.game_window import (
     set_game_window_middleware,

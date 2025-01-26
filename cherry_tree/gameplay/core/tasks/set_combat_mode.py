@@ -28,7 +28,7 @@ class SetCombatModeTask(BaseTask):
 
         if coordinate:
             set_combat_mode(coordinate)
-            logger.info(f"Combat mode {DEFAULT_COMBAT_MODE} was selected!")
+            logger.info("Combat mode %s was selected!", DEFAULT_COMBAT_MODE)
             context["combat"]["strength"]["enabled"] = True
             self.status = TaskStatus.COMPLETED.value
 
