@@ -8,6 +8,7 @@ class TaskStatus(Enum):
     RUNNING = "running"
     COMPLETED = "completed"
     TIMEOUT = "timeout"
+    ERROR = "error"
     AWAITING_MANUAL_TERMINATION = "awaiting_manual_termination"
     AWAITING_DELAY_BEFORE_START = "awaiting_delay_before_start"
     AWAITING_DELAY_TO_COMPLETE = "awaiting_delay_to_complete"
