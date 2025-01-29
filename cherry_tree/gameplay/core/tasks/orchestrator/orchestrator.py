@@ -79,7 +79,10 @@ class TasksOrchestrator:
                 context = self.current_task.execute(context)
 
             # Delay após completar a tarefa
-            if self.current_task.status == TaskStatus.COMPLETED.value:
+            if self.current_task.status in (
+                TaskStatus.COMPLETED.value,
+                TaskStatus.ERROR.value,
+            ):
                 context = self.current_task.on_complete(context)
                 if self.current_task.delay_after_complete:
                     sleep(self.current_task.delay_after_complete)
