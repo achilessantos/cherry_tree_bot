@@ -18,14 +18,17 @@ def get_combat_mode(screenshot, combat_mode="strength_mode"):
 
 
 def get_collect_loot_coordinate(screenshot):
-    image_path = IMAGES["buttons"].get("collectLoots")
-    template = read_image(image_path)
-    result = locate(screenshot, template)
+    try:
+        image_path = IMAGES["buttons"].get("collectLoots")
+        template = read_image(image_path)
+        result = locate(screenshot, template)
 
-    if result:
-        return result
-
-    return None
+        if result:
+            return result
+        
+        raise ValueError("Falha na coleta do loot.")
+    except ValueError as e:
+        return None
 
 
 def set_combat_mode(coordinates: BBox):
