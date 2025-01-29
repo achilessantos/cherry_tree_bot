@@ -29,27 +29,32 @@ def get_screenshot() -> Union[ndarray, None]:
 def locate(
     screenshot: any, template: any, confidence: float = 0.85
 ) -> Union[BBox, None]:
-    if screenshot is None:
-        raise ValueError("Screenshot is None. Please provide a valid image.")
-    if template is None:
-        raise ValueError("Template is None. Please provide a valid template image.")
+    try:
+        if screenshot is None:
+            raise ValueError("Screenshot is None. Please provide a valid image.")
+        if template is None:
+            raise ValueError("Template is None. Please provide a valid template image.")
 
-    method = cv2.TM_CCOEFF_NORMED
-    match = cv2.matchTemplate(screenshot, template, method)
-    _, confidence_result, _, max_locate = cv2.minMaxLoc(match)
+        method = cv2.TM_CCOEFF_NORMED
+        match = cv2.matchTemplate(screenshot, template, method)
+        _, confidence_result, _, max_locate = cv2.minMaxLoc(match)
 
-    if confidence_result < confidence:
-        raise ValueError(
-            f"Confidence matching was below the threshold. Obtained: {confidence_result:.2f}, Expected: {confidence:.2f}."
+        if confidence_result < confidence:
+            raise ValueError(
+                f"Confidence matching was below the threshold. Obtained: {confidence_result:.2f}, Expected: {confidence:.2f}."
+            )
+
+        template_width, template_height = template.shape[::-1]
+
+        return (
+            max_locate[0] + template_width // 2,
+            max_locate[1] + template_height // 2,
+            template_width,
+            template_height,
         )
-
-    template_width, template_height = template.shape[::-1]
-    return (
-        max_locate[0] + template_width // 2,
-        max_locate[1] + template_height // 2,
-        template_width,
-        template_height,
-    )
+    except ValueError as e:
+        logger.info(e)
+        return None
 
 
 def read_image(image_path: str):
